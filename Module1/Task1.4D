@@ -1,1 +1,68 @@
+#define PIN 12
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(8, OUTPUT);
+  pinMode(13, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(2, INPUT);
+  pinMode(A1, INPUT);  
+  pinMode(PIN, INPUT);
+  noInterrupts();
+  
+  PCICR |= 0b00000111;
 
+  PCMSK0 |= 0b00010000;
+  
+  
+  
+  TCCR1A=0;
+  TCCR1B=0;
+  
+  TCNT1=34286;
+  TCCR1B|=(1<<CS12);
+  TIMSK1|=(1<<TOIE1);
+  interrupts();
+  attachInterrupt(0, blink, CHANGE);
+
+}
+
+void loop()
+{
+
+  delay(500); // Wait for 500 millisecond(s)
+}
+
+ISR(TIMER1_OVF_vect)
+{
+	TCNT1=34286;//reload time
+  	Serial.println("led periodly on");
+    digitalWrite(13,digitalRead(13)^1);
+}
+
+ISR(PCINT0_vect)
+{
+   Serial.println("pcint led toggle");
+   digitalWrite(9,digitalRead(9)^1);
+}
+
+void blink()
+{
+  int PIRvalue;
+  int value;
+  PIRvalue = digitalRead(2);
+  value = analogRead(A1);
+  Serial.print("temperature is ");
+ 
+  Serial.println(value);
+  if(PIRvalue == 1)
+  {
+    Serial.println("turn led on");
+    digitalWrite(8, HIGH);
+  }
+  else
+  {
+    Serial.println("turn led off");
+    digitalWrite(8, LOW);  
+  }
+}
