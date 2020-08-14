@@ -1,1 +1,23 @@
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(8, OUTPUT);
+  pinMode(2, INPUT);
+}
 
+void loop()
+{
+  int PIRvalue;
+  PIRvalue = digitalRead(2);
+  if(PIRvalue == 1)
+  {
+    Serial.println("get high data from pIC,led on");
+  	digitalWrite(8, HIGH);
+  }
+  else
+  {
+    Serial.println("get low data from pIC,led off");
+    digitalWrite(8, LOW);  
+  }
+  delay(500); // Wait for 500 millisecond(s)
+}
