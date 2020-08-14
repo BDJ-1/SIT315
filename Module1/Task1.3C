@@ -1,1 +1,40 @@
 
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(8, OUTPUT);
+  pinMode(2, INPUT);
+  pinMode(A1, INPUT);  
+  attachInterrupt(0, blink, CHANGE);
+}
+
+void loop()
+{
+
+  delay(500); // Wait for 500 millisecond(s)
+}
+
+void blink()
+{
+  int PIRvalue;
+  int value;
+  PIRvalue = digitalRead(2);
+  value = analogRead(A1);
+  Serial.print("temperature is ");
+  Serial.println(value);
+  if(PIRvalue == 1)
+  {
+    Serial.println("turn led on");
+  	digitalWrite(8, HIGH);
+  }
+  else
+  {
+    Serial.println("turn led off");
+    digitalWrite(8, LOW);  
+  }
+}
+
+void burpcount()
+{
+  burp++;
+}
